@@ -44,9 +44,18 @@ class MainHandler(tornado.web.RequestHandler):
                         var output = document.getElementById("output");
                         ws.onmessage = function(event) {
                             output.innerText += event.data;
+
+                            // auto scroll window
+                            window.scroll(0, document.height);
                         };
                     });
                 </script>
+                <style>
+                    body {
+                        background:black;
+                        color:lightgreen;
+                    }
+                </style>
             </head>
             <body>
                 <pre id="output"></pre>
@@ -91,7 +100,7 @@ if __name__ == "__main__":
 
     # setup scheduler for push log content to web client
     scheduler = tornado.ioloop.PeriodicCallback(push_to_client,
-                                                1 * 1000, main_loop)
+                                                1 * 500, main_loop)
     application.listen(8888)
     scheduler.start()
     try:
